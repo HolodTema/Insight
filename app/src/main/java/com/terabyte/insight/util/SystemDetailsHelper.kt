@@ -179,4 +179,28 @@ object SystemDetailsHelper {
         )
     }
 
+    fun getAll(packageManager: PackageManager, resources: Resources, contentResolver: ContentResolver): List<SystemDetail> {
+        return listOf(
+            getBrand(),
+            getModel(),
+            getManufacturer(),
+            getDeviceIndustrialName(),
+            getProductName(),
+            getDeviceId(contentResolver),
+            getBuildId(),
+            getAndroidVersion(),
+            getVersionCode(),
+            getAndroidType(),
+            getUserBuildType(),
+            getVersionIncremental(),
+            getBuildFingerprint(),
+            getBuildCreationTime(),
+            getBuildTags(),
+            getCurrentTimeZone(),
+            getCurrentLanguage(resources),
+            getTimeSinceLastBoot(),
+            getGooglePlayServicesVersionCode(packageManager)
+        )
+    }
+
 }
