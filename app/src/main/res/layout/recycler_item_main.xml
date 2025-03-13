@@ -4,22 +4,35 @@
     android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="horizontal"
+    android:id="@+id/rootRecyclerItemMain"
     android:gravity="center">
-    <TextView
+    <LinearLayout
         android:layout_width="0dp"
-        android:layout_weight="1"
         android:layout_height="wrap_content"
-        android:id="@+id/textRecyclerItemMain"
-        android:textSize="18sp"
-        tools:text="Item recycler main"
-        android:layout_margin="8dp"/>
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:layout_margin="8dp">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/textRecyclerItemMainTitle"
+            android:textSize="18sp"
+            tools:text="Item recycler main title"
+            android:layout_marginBottom="4dp"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/textRecyclerItemMainDesc"
+            tools:text="Item recycler main desc"/>
+    </LinearLayout>
+
     <ImageView
-        android:layout_width="35dp"
-        android:layout_height="35dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:id="@+id/imageRecyclerItemMain"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
         android:contentDescription=""
-        android:src=""
+        android:src="@drawable/ic_settings"
         android:layout_marginEnd="8dp"/>
 </LinearLayout>

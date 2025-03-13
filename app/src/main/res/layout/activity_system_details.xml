@@ -5,11 +5,5 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.MainActivity">
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/recyclerMain"
-        tools:listitem="@layout/recycler_item_main"/>
+    tools:context=".activity.SystemDetailsActivity">    
 </androidx.constraintlayout.widget.ConstraintLayout>
