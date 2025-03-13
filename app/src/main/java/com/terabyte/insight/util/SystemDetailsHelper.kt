@@ -105,9 +105,10 @@ object SystemDetailsHelper {
     }
 
     fun getBuildCreationTime(): SystemDetail {
+        val time = DateHelper.millsToDateString(Build.TIME)
         return SystemDetail(
             "Build creation time",
-            Build.TIME.toString(),
+            time,
             "The time at which the build was produced, given in milliseconds since 01.01.1970"
         )
     }
@@ -155,7 +156,7 @@ object SystemDetailsHelper {
     fun getTimeSinceLastBoot(): SystemDetail {
         return SystemDetail(
             "Time since last boot",
-            SystemClock.elapsedRealtime().toString(),
+            DateHelper.millsToSpentTimeString(SystemClock.elapsedRealtime()),
             "Time since last boot of the device in milliseconds."
         )
     }
