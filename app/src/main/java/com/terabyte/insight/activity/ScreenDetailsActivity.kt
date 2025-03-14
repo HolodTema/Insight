@@ -37,7 +37,7 @@ class ScreenDetailsActivity : AppCompatActivity() {
     }
 
     private fun configureRecyclerView() {
-        val items = ScreenDetailsHelper.getAll(resources, windowManager, display)
+        val items = ScreenDetailsHelper.getAll(resources, windowManager, display, contentResolver)
         binding.recycler.layoutManager = LinearLayoutManager(this)
         binding.recycler.adapter = RecyclerDeviceDetailsAdapter(items, layoutInflater)
 

@@ -1,9 +1,12 @@
 package com.terabyte.insight.util
 
+import android.content.ContentResolver
 import android.content.res.Resources
 import android.graphics.Point
 import android.os.Build
+import android.provider.Settings
 import android.util.DisplayMetrics
+import android.util.Log
 import android.view.Display
 import android.view.WindowInsets
 import android.view.WindowManager
@@ -15,6 +18,7 @@ import kotlin.math.sqrt
 
 object ScreenDetailsHelper {
     private const val MM_IN_INCH = 25.4
+    private const val VALUE_NO_INFO = "No information"
 
     fun getScreenSize(
         resources: Resources,
@@ -87,7 +91,24 @@ object ScreenDetailsHelper {
         )
     }
 
-    fun getAll(resources: Resources, windowManager: WindowManager, display: Display): List<DeviceDetail> {
+    fun getBrightness(contentResolver: ContentResolver): DeviceDetail {
+        var brightness = VALUE_NO_INFO
+        try {
+            brightness = Settings.System.getInt(
+                contentResolver,
+                Settings.System.SCREEN_BRIGHTNESS
+            ).toString()
+        } catch (e: Settings.SettingNotFoundException) {
+            e.printStackTrace()
+        }
+        return DeviceDetail(
+            "Screen brightness",
+            brightness,
+            "Brightness value from 1 to 255"
+        )
+    }
+
+    fun getAll(resources: Resources, windowManager: WindowManager, display: Display, resolver: ContentResolver): List<DeviceDetail> {
         return listOf(
             getScreenSize(resources, windowManager, display),
             getScreenDpi(resources),
@@ -95,7 +116,7 @@ object ScreenDetailsHelper {
             getScreenDpiY(resources),
             getScreenSizeMm(resources, windowManager, display),
             getScreenDiagonalInches(resources, windowManager, display),
-
+            getBrightness(resolver)
             )
     }
 
