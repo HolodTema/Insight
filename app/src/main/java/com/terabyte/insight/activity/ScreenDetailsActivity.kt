@@ -8,21 +8,24 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.terabyte.insight.R
-import com.terabyte.insight.databinding.ActivitySystemDetailsBinding
+import com.terabyte.insight.databinding.ActivityScreenDetailsBinding
 import com.terabyte.insight.ui.RecyclerDeviceDetailsAdapter
+import com.terabyte.insight.util.ScreenDetailsHelper
 import com.terabyte.insight.util.SystemDetailsHelper
 
-class SystemDetailsActivity : AppCompatActivity() {
-    private lateinit var binding: ActivitySystemDetailsBinding
+class ScreenDetailsActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityScreenDetailsBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivitySystemDetailsBinding.inflate(layoutInflater)
+        binding = ActivityScreenDetailsBinding.inflate(layoutInflater)
         enableEdgeToEdge()
         setContentView(binding.root)
         configureWindowInsets()
         configureRecyclerView()
         configureButtonBack()
+
+
     }
 
     private fun configureWindowInsets() {
@@ -34,14 +37,14 @@ class SystemDetailsActivity : AppCompatActivity() {
     }
 
     private fun configureRecyclerView() {
-        val items = SystemDetailsHelper.getAll(packageManager, resources, contentResolver)
-        binding.recyclerSystemDetails.layoutManager = LinearLayoutManager(this)
-        binding.recyclerSystemDetails.adapter = RecyclerDeviceDetailsAdapter(items, layoutInflater)
+        val items = ScreenDetailsHelper.getAll(resources, windowManager, display)
+        binding.recycler.layoutManager = LinearLayoutManager(this)
+        binding.recycler.adapter = RecyclerDeviceDetailsAdapter(items, layoutInflater)
 
     }
 
     private fun configureButtonBack() {
-        binding.imageSystemDetailsBack.setOnClickListener {
+        binding.imageBack.setOnClickListener {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         }

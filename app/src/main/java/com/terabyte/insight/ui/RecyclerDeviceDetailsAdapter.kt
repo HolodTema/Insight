@@ -6,21 +6,21 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.terabyte.insight.R
-import com.terabyte.insight.model.SystemDetail
+import com.terabyte.insight.model.DeviceDetail
 
-class RecyclerSystemDetailsAdapter(
-    private val items: List<SystemDetail>,
+class RecyclerDeviceDetailsAdapter(
+    private val items: List<DeviceDetail>,
     private val inflater: LayoutInflater,
-) : RecyclerView.Adapter<RecyclerSystemDetailsAdapter.RecyclerMainHolder>() {
+) : RecyclerView.Adapter<RecyclerDeviceDetailsAdapter.Holder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerMainHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
         val view = inflater.inflate(R.layout.recycler_item_system_details, parent, false)
-        return RecyclerMainHolder(view)
+        return Holder(view)
     }
 
     override fun getItemCount() = items.size
 
-    override fun onBindViewHolder(holder: RecyclerMainHolder, position: Int) {
+    override fun onBindViewHolder(holder: Holder, position: Int) {
         val item = items[position]
 
         holder.textName.text = item.name
@@ -31,7 +31,7 @@ class RecyclerSystemDetailsAdapter(
         }
     }
 
-    class RecyclerMainHolder(view: View) : RecyclerView.ViewHolder(view) {
+    class Holder(view: View) : RecyclerView.ViewHolder(view) {
         val textName = view.findViewById<TextView>(R.id.textRecyclerItemSystemDetailsName)
         val textValue = view.findViewById<TextView>(R.id.textRecyclerItemSystemDetailsValue)
         val textDescription = view.findViewById<TextView>(R.id.textRecyclerItemSystemDetailsDesc)

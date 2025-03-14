@@ -42,10 +42,10 @@ class MainActivity : AppCompatActivity() {
                 SystemDetailsActivity::class.java
             ),
             RecyclerMainItem(
-                "Screen",
-                "Screen size, dpi, orientation and more",
+                "Screen and GPU",
+                "Screen size, dpi, orientation and graphic processor properties",
                 R.drawable.ic_settings,
-                SystemDetailsActivity::class.java
+                ScreenDetailsActivity::class.java
             ),
             RecyclerMainItem(
                 "Battery",
