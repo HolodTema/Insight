@@ -13,6 +13,7 @@ import com.google.android.gms.common.GoogleApiAvailability
 import com.terabyte.insight.model.DeviceDetail
 
 object SystemDetailsHelper {
+    private const val VALUE_NO_INFO = "No information"
 
     fun getBrand(): DeviceDetail {
         return DeviceDetail(
@@ -42,7 +43,7 @@ object SystemDetailsHelper {
     fun getDeviceId(contentResolver: ContentResolver): DeviceDetail {
         // TODO: understand why it is not safe
         val value = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            Settings.Secure.getString(contentResolver, Settings.Secure.ANDROID_ID),
+            Settings.Secure.getString(contentResolver, Settings.Secure.ANDROID_ID)
         }
         else {
             "Not supported"
@@ -127,6 +128,14 @@ object SystemDetailsHelper {
         )
     }
 
+    fun getBootloaderVersion(): DeviceDetail {
+        return DeviceDetail(
+            "Android bootloader version",
+            Build.BOOTLOADER,
+            "Bootloader is a program which runs every boot and starts Android OS."
+        )
+    }
+
     fun getDeviceIndustrialName(): DeviceDetail {
         return DeviceDetail(
             "Device industrial name",
@@ -186,6 +195,22 @@ object SystemDetailsHelper {
         )
     }
 
+    fun getJvmVersion(): DeviceDetail {
+        return DeviceDetail(
+            "JVM version",
+            java.lang.System.getProperty("java.vm.version") ?: VALUE_NO_INFO,
+            "The version of Java Virtual Machine"
+        )
+    }
+
+    fun getJavaRuntimeVersion(): DeviceDetail {
+        return DeviceDetail(
+            "Java runtime version",
+            java.lang.System.getProperty("java.runtime.version") ?: VALUE_NO_INFO,
+            ""
+        )
+    }
+
     fun getAll(packageManager: PackageManager, resources: Resources, contentResolver: ContentResolver): List<DeviceDetail> {
         return listOf(
             getBrand(),
@@ -203,10 +228,13 @@ object SystemDetailsHelper {
             getBuildFingerprint(),
             getBuildCreationTime(),
             getBuildTags(),
+            getBootloaderVersion(),
             getCurrentTimeZone(),
             getCurrentLanguage(resources),
             getTimeSinceLastBoot(),
-            getGooglePlayServicesVersionCode(packageManager)
+            getGooglePlayServicesVersionCode(packageManager),
+            getJvmVersion(),
+            getJavaRuntimeVersion()
         )
     }
 
