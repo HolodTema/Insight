@@ -41,9 +41,15 @@ object SystemDetailsHelper {
     @SuppressLint("HardwareIds")
     fun getDeviceId(contentResolver: ContentResolver): DeviceDetail {
         // TODO: understand why it is not safe
+        val value = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            Settings.Secure.getString(contentResolver, Settings.Secure.ANDROID_ID),
+        }
+        else {
+            "Not supported"
+        }
         return DeviceDetail(
             "Device ID",
-            Settings.Secure.getString(contentResolver, Settings.Secure.ANDROID_ID),
+            value,
             "Unique 64-bit string of the device. It is supported since Android 8.0 (api26)"
         )
     }
