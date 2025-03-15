@@ -1,15 +1,18 @@
 package com.terabyte.insight.util
 
+import android.app.ActivityManager
 import android.content.ContentResolver
 import android.content.res.Resources
 import android.graphics.Point
 import android.os.Build
+import android.os.HardwarePropertiesManager
 import android.provider.Settings
 import android.util.DisplayMetrics
 import android.util.Log
 import android.view.Display
 import android.view.WindowInsets
 import android.view.WindowManager
+import com.terabyte.insight.TEXT_NO_INFORMATION
 import com.terabyte.insight.model.DeviceDetail
 import java.util.Locale
 import kotlin.math.round
@@ -18,7 +21,6 @@ import kotlin.math.sqrt
 
 object ScreenDetailsHelper {
     private const val MM_IN_INCH = 25.4
-    private const val VALUE_NO_INFO = "No information"
 
     fun getScreenSize(
         resources: Resources,
@@ -92,7 +94,7 @@ object ScreenDetailsHelper {
     }
 
     fun getBrightness(contentResolver: ContentResolver): DeviceDetail {
-        var brightness = VALUE_NO_INFO
+        var brightness = TEXT_NO_INFORMATION
         try {
             brightness = Settings.System.getInt(
                 contentResolver,
@@ -108,16 +110,43 @@ object ScreenDetailsHelper {
         )
     }
 
-    fun getAll(resources: Resources, windowManager: WindowManager, display: Display, resolver: ContentResolver): List<DeviceDetail> {
-        return listOf(
+    fun getSupportedOpenGlVersions(activityManager: ActivityManager): DeviceDetail {
+        return DeviceDetail(
+            "Supported OpenGL versions",
+            activityManager.deviceConfigurationInfo.glEsVersion,
+            "OpenGl (open graphic library) is required for 2D and 3D content visualisation."
+        )
+    }
+
+    fun getGpuModel(): DeviceDetail {
+        return DeviceDetail(
+            "GPU model",
+            Build.HARDWARE,
+            "Name of graphic processor (GPU)"
+        )
+    }
+
+    fun getGpuCores(): DeviceDetail {
+        return DeviceDetail(
+            "Amount of GPU cores",
+            Runtime.getRuntime().availableProcessors().toString(),
+            ""
+        )
+    }
+
+    fun getAll(resources: Resources, windowManager: WindowManager, display: Display, resolver: ContentResolver, activityManager: ActivityManager): ArrayList<DeviceDetail> {
+        return arrayListOf(
             getScreenSize(resources, windowManager, display),
             getScreenDpi(resources),
             getScreenDpiX(resources),
             getScreenDpiY(resources),
             getScreenSizeMm(resources, windowManager, display),
             getScreenDiagonalInches(resources, windowManager, display),
-            getBrightness(resolver)
-            )
+            getBrightness(resolver),
+            getSupportedOpenGlVersions(activityManager),
+            getGpuModel(),
+            getGpuCores()
+        )
     }
 
     private fun getNavigationBarHeightPixels(windowManager: WindowManager, display: Display): Int {

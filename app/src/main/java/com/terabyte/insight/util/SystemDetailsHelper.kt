@@ -10,10 +10,10 @@ import android.os.SystemClock
 import android.provider.Settings
 import androidx.core.content.pm.PackageInfoCompat
 import com.google.android.gms.common.GoogleApiAvailability
+import com.terabyte.insight.TEXT_NO_INFORMATION
 import com.terabyte.insight.model.DeviceDetail
 
 object SystemDetailsHelper {
-    private const val VALUE_NO_INFO = "No information"
 
     fun getBrand(): DeviceDetail {
         return DeviceDetail(
@@ -198,7 +198,7 @@ object SystemDetailsHelper {
     fun getJvmVersion(): DeviceDetail {
         return DeviceDetail(
             "JVM version",
-            java.lang.System.getProperty("java.vm.version") ?: VALUE_NO_INFO,
+            java.lang.System.getProperty("java.vm.version") ?: TEXT_NO_INFORMATION,
             "The version of Java Virtual Machine"
         )
     }
@@ -206,8 +206,16 @@ object SystemDetailsHelper {
     fun getJavaRuntimeVersion(): DeviceDetail {
         return DeviceDetail(
             "Java runtime version",
-            java.lang.System.getProperty("java.runtime.version") ?: VALUE_NO_INFO,
+            java.lang.System.getProperty("java.runtime.version") ?: TEXT_NO_INFORMATION,
             ""
+        )
+    }
+
+    fun getArch(): DeviceDetail {
+        return DeviceDetail(
+            "Architecture",
+            System.getProperty("os.arch") ?: TEXT_NO_INFORMATION,
+            "Architecture that device's CPU supports"
         )
     }
 
@@ -234,7 +242,8 @@ object SystemDetailsHelper {
             getTimeSinceLastBoot(),
             getGooglePlayServicesVersionCode(packageManager),
             getJvmVersion(),
-            getJavaRuntimeVersion()
+            getJavaRuntimeVersion(),
+            getArch()
         )
     }
 

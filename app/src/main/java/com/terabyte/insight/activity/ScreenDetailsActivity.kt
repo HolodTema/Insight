@@ -1,5 +1,7 @@
 package com.terabyte.insight.activity
 
+import android.app.ActivityManager
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
@@ -9,6 +11,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.terabyte.insight.R
 import com.terabyte.insight.databinding.ActivityScreenDetailsBinding
+import com.terabyte.insight.gl.GlRenderer
 import com.terabyte.insight.ui.RecyclerDeviceDetailsAdapter
 import com.terabyte.insight.util.ScreenDetailsHelper
 import com.terabyte.insight.util.SystemDetailsHelper
@@ -28,6 +31,16 @@ class ScreenDetailsActivity : AppCompatActivity() {
 
     }
 
+    override fun onResume() {
+        super.onResume()
+        binding.glSurface.onResume()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        binding.glSurface.onPause()
+    }
+
     private fun configureWindowInsets() {
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -37,10 +50,19 @@ class ScreenDetailsActivity : AppCompatActivity() {
     }
 
     private fun configureRecyclerView() {
-        val items = ScreenDetailsHelper.getAll(resources, windowManager, display, contentResolver)
-        binding.recycler.layoutManager = LinearLayoutManager(this)
-        binding.recycler.adapter = RecyclerDeviceDetailsAdapter(items, layoutInflater)
+        val activityManager = getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+        val items = ScreenDetailsHelper.getAll(resources, windowManager, display, contentResolver, activityManager)
 
+        val adapter = RecyclerDeviceDetailsAdapter(items, layoutInflater)
+        binding.recycler.layoutManager = LinearLayoutManager(this)
+        binding.recycler.adapter = adapter
+
+        val glRenderer = GlRenderer { deviceDetails ->
+            items.addAll(deviceDetails)
+            adapter.notifyDataSetChanged()
+        }
+
+        binding.glSurface.setRenderer(glRenderer)
     }
 
     private fun configureButtonBack() {
