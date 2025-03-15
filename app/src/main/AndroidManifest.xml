@@ -13,6 +13,9 @@
         android:theme="@style/Theme.Insight"
         tools:targetApi="31">
         <activity
+            android:name=".activity.CpuDetailsActivity"
+            android:exported="false" />
+        <activity
             android:name=".activity.ScreenDetailsActivity"
             android:exported="false" />
         <activity

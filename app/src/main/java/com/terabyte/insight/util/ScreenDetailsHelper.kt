@@ -118,22 +118,6 @@ object ScreenDetailsHelper {
         )
     }
 
-    fun getGpuModel(): DeviceDetail {
-        return DeviceDetail(
-            "GPU model",
-            Build.HARDWARE,
-            "Name of graphic processor (GPU)"
-        )
-    }
-
-    fun getGpuCores(): DeviceDetail {
-        return DeviceDetail(
-            "Amount of GPU cores",
-            Runtime.getRuntime().availableProcessors().toString(),
-            ""
-        )
-    }
-
     fun getAll(resources: Resources, windowManager: WindowManager, display: Display, resolver: ContentResolver, activityManager: ActivityManager): ArrayList<DeviceDetail> {
         return arrayListOf(
             getScreenSize(resources, windowManager, display),
@@ -144,8 +128,6 @@ object ScreenDetailsHelper {
             getScreenDiagonalInches(resources, windowManager, display),
             getBrightness(resolver),
             getSupportedOpenGlVersions(activityManager),
-            getGpuModel(),
-            getGpuCores()
         )
     }
 

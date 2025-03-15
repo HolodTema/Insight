@@ -211,14 +211,6 @@ object SystemDetailsHelper {
         )
     }
 
-    fun getArch(): DeviceDetail {
-        return DeviceDetail(
-            "Architecture",
-            System.getProperty("os.arch") ?: TEXT_NO_INFORMATION,
-            "Architecture that device's CPU supports"
-        )
-    }
-
     fun getAll(packageManager: PackageManager, resources: Resources, contentResolver: ContentResolver): List<DeviceDetail> {
         return listOf(
             getBrand(),
@@ -243,7 +235,6 @@ object SystemDetailsHelper {
             getGooglePlayServicesVersionCode(packageManager),
             getJvmVersion(),
             getJavaRuntimeVersion(),
-            getArch()
         )
     }
 

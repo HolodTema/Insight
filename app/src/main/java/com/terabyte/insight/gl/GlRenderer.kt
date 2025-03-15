@@ -21,6 +21,11 @@ class GlRenderer(private val listener: (List<DeviceDetail>) -> Unit) : Renderer 
             listener(
                 listOf(
                     DeviceDetail(
+                        "GPU model",
+                        glRenderer,
+                        "The name of graphic processor of the device"
+                    ),
+                    DeviceDetail(
                         "GPU vendor",
                         gpuVendor,
                         "Company-manufacturer of graphic processor (GPU)"
@@ -31,15 +36,11 @@ class GlRenderer(private val listener: (List<DeviceDetail>) -> Unit) : Renderer 
                         "Version of Open graphic library (OpenGL)"
                     ),
                     DeviceDetail(
-                        "OpenGl extensions",
+                        "OpenGL extensions",
                         glExtensions,
                         "Open graphic library extensions"
                     ),
-                    DeviceDetail(
-                        "OpenGL renderer",
-                        glRenderer,
-                        ""
-                    ),
+
                 )
             )
         }

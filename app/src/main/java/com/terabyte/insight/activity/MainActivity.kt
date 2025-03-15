@@ -54,10 +54,10 @@ class MainActivity : AppCompatActivity() {
                 SystemDetailsActivity::class.java
             ),
             RecyclerMainItem(
-                "Processor",
+                "Processor (CPU)",
                 "Information about CPU cores, architecture and more",
                 R.drawable.ic_settings,
-                SystemDetailsActivity::class.java
+                CpuDetailsActivity::class.java
             ),
 
         )
