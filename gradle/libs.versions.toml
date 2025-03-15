@@ -10,8 +10,10 @@ material = "1.12.0"
 activity = "1.10.1"
 constraintlayout = "2.2.1"
 playServicesBase = "18.5.0"
+graphview = "4.2.2"
 
 [libraries]
+graphview = { group = "com.jjoe64", name = "graphview", version.ref = "graphview" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }

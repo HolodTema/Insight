@@ -59,6 +59,12 @@ class MainActivity : AppCompatActivity() {
                 R.drawable.ic_settings,
                 CpuDetailsActivity::class.java
             ),
+            RecyclerMainItem(
+                "System usage",
+                "Graphs of system usage in percents",
+                R.drawable.ic_settings,
+                SystemUsageActivity::class.java
+            ),
 
         )
         binding.recyclerMain.layoutManager = LinearLayoutManager(this)

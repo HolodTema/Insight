@@ -39,6 +39,8 @@ android {
 }
 
 dependencies {
+    //graphview lib
+    implementation(libs.graphview)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
