@@ -56,9 +56,15 @@ object CpuDetailsHelper {
         var line = TEXT_NO_INFORMATION
         try {
             val process = Runtime.getRuntime()
-                .exec("grep 'cpu ' /proc/stat | awk '{usage=(\$2+\$4)*100/(\$2+\$4+\$5)} END {print usage \"%\"}'")
+                .exec("top -m 10")
             val reader = BufferedReader(InputStreamReader(process.inputStream))
+            while (!line.contains("%CPU")) {
+                line = reader.readLine()
+            }
+            Log.d("mydebug", line)
             line = reader.readLine()
+            Log.d("mydebug", line)
+//            line = reader.readLine().split(" ")[8]
         }
         catch (e: Exception) {
             e.printStackTrace()
