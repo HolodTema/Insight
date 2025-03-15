@@ -9,34 +9,38 @@ import kotlinx.coroutines.launch
 import javax.microedition.khronos.egl.EGLConfig
 import javax.microedition.khronos.opengles.GL10
 
-class GlRenderer(private val listener: (List<DeviceDetail>) -> Unit): Renderer {
+class GlRenderer(private val listener: (List<DeviceDetail>) -> Unit) : Renderer {
 
     override fun onSurfaceCreated(gl: GL10?, p1: EGLConfig?) {
+        val gpuVendor = gl?.glGetString(GL10.GL_VENDOR) ?: TEXT_NO_INFORMATION
+        val glVersion = gl?.glGetString(GL10.GL_VERSION) ?: TEXT_NO_INFORMATION
+        val glExtensions = gl?.glGetString(GL10.GL_EXTENSIONS) ?: TEXT_NO_INFORMATION
+        val glRenderer = gl?.glGetString(GL10.GL_RENDERER) ?: TEXT_NO_INFORMATION
+
         CoroutineScope(Dispatchers.Main).launch {
             listener(
                 listOf(
                     DeviceDetail(
                         "GPU vendor",
-                        gl?.glGetString(GL10.GL_VENDOR) ?: TEXT_NO_INFORMATION,
+                        gpuVendor,
                         "Company-manufacturer of graphic processor (GPU)"
                     ),
                     DeviceDetail(
                         "OpenGL version",
-                        gl?.glGetString(GL10.GL_VERSION) ?: TEXT_NO_INFORMATION,
+                        glVersion,
                         "Version of Open graphic library (OpenGL)"
                     ),
                     DeviceDetail(
                         "OpenGl extensions",
-                        gl?.glGetString(GL10.GL_EXTENSIONS) ?: TEXT_NO_INFORMATION,
+                        glExtensions,
                         "Open graphic library extensions"
                     ),
                     DeviceDetail(
                         "OpenGL renderer",
-                        gl?.glGetString(GL10.GL_RENDERER) ?: TEXT_NO_INFORMATION,
+                        glRenderer,
                         ""
                     ),
-
-                    )
+                )
             )
         }
     }

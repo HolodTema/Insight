@@ -19,6 +19,8 @@ import com.terabyte.insight.util.SystemDetailsHelper
 class ScreenDetailsActivity : AppCompatActivity() {
     private lateinit var binding: ActivityScreenDetailsBinding
 
+    private var isOpenGlInfoGot = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityScreenDetailsBinding.inflate(layoutInflater)
@@ -58,10 +60,14 @@ class ScreenDetailsActivity : AppCompatActivity() {
         binding.recycler.adapter = adapter
 
         val glRenderer = GlRenderer { deviceDetails ->
-            items.addAll(deviceDetails)
-            adapter.notifyDataSetChanged()
+            if (!isOpenGlInfoGot) {
+                items.addAll(deviceDetails)
+                adapter.notifyDataSetChanged()
+                isOpenGlInfoGot = true
+            }
         }
 
+        binding.glSurface.setEGLContextClientVersion(2);
         binding.glSurface.setRenderer(glRenderer)
     }
 
