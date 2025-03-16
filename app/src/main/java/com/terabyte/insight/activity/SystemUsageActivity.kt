@@ -1,5 +1,6 @@
 package com.terabyte.insight.activity
 
+import android.app.ActivityManager
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
@@ -19,6 +20,7 @@ class SystemUsageActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySystemUsageBinding
 
     private var listTotalSystemUsage = arrayListOf<DataPoint>()
+    private var listMemoryUsage = arrayListOf<DataPoint>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,6 +30,7 @@ class SystemUsageActivity : AppCompatActivity() {
         configureWindowInsets()
         configureButtonBack()
         configureTotalSystemUsageGraph()
+//        configureMemoryUsageGraph()
     }
 
     private fun configureWindowInsets() {
@@ -66,7 +69,7 @@ class SystemUsageActivity : AppCompatActivity() {
                 val newListTotalSystemUsage = arrayListOf<DataPoint>()
                 listTotalSystemUsage.removeAt(0)
                 listTotalSystemUsage.forEach {
-                    newListTotalSystemUsage.add(DataPoint(it.x-1, it.y))
+                    newListTotalSystemUsage.add(DataPoint(it.x - 1, it.y))
                 }
                 listTotalSystemUsage = newListTotalSystemUsage
             }
@@ -78,6 +81,49 @@ class SystemUsageActivity : AppCompatActivity() {
             series.thickness = 6
             binding.graphTotalSystemUsage.removeAllSeries()
             binding.graphTotalSystemUsage.addSeries(series)
+        }
+    }
+
+    private fun configureMemoryUsageGraph() {
+        binding.graphMemoryUsage.title = "RAM usage"
+
+        binding.graphMemoryUsage.viewport.isXAxisBoundsManual = true
+        binding.graphMemoryUsage.viewport.isYAxisBoundsManual = true
+        binding.graphMemoryUsage.viewport.setMinX(0.0)
+        binding.graphMemoryUsage.viewport.setMaxX(15.0)
+        binding.graphMemoryUsage.viewport.setMinY(0.0)
+        binding.graphMemoryUsage.viewport.setMaxY(100.0)
+
+        val activityManager = getSystemService(ACTIVITY_SERVICE) as ActivityManager
+
+        SystemUsageHelper.getEndlessMemoryUsage(
+            activityManager,
+            1
+        ) { totalMemoryBytes, usedMemoryBytes, usagePercents ->
+            if (usagePercents == SystemUsageHelper.MEMORY_USAGE_INCORRECT || totalMemoryBytes == SystemUsageHelper.TOTAL_MEMORY_INCORRECT || usedMemoryBytes == SystemUsageHelper.USED_MEMORY_INCORRECT) {
+                binding.graphTotalSystemUsage.title = "Memory usage. No information"
+                return@getEndlessMemoryUsage
+            }
+
+            binding.graphTotalSystemUsage.title = "Memory usage = $usagePercents%"
+
+            listMemoryUsage.add(DataPoint(listMemoryUsage.size.toDouble(), usagePercents))
+            if (listMemoryUsage.size > 15) {
+                val newListMemoryUsage = arrayListOf<DataPoint>()
+                listMemoryUsage.removeAt(0)
+                listMemoryUsage.forEach {
+                    newListMemoryUsage.add(DataPoint(it.x - 1, it.y))
+                }
+                listMemoryUsage = newListMemoryUsage
+            }
+
+            val series = LineGraphSeries(
+                listMemoryUsage.toTypedArray()
+            )
+            series.color = Color.GREEN
+            series.thickness = 6
+            binding.graphMemoryUsage.removeAllSeries()
+            binding.graphMemoryUsage.addSeries(series)
         }
     }
 }

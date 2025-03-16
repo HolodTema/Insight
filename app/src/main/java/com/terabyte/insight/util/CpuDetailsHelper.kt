@@ -1,6 +1,8 @@
 package com.terabyte.insight.util
 
+import android.app.ActivityManager
 import android.os.Build
+import android.os.Debug
 import com.terabyte.insight.TEXT_NO_INFORMATION
 import com.terabyte.insight.model.DeviceDetail
 
@@ -70,13 +72,26 @@ object CpuDetailsHelper {
         )
     }
 
-    fun getAll(): ArrayList<DeviceDetail> {
+    fun getMemory(activityManager: ActivityManager): DeviceDetail {
+        val memoryInfo = ActivityManager.MemoryInfo()
+        activityManager.getMemoryInfo(memoryInfo)
+        val totalMemory = memoryInfo.totalMem
+
+        return DeviceDetail(
+            "memory",
+            totalMemory.toString(),
+            ""
+        )
+    }
+
+    fun getAll(activityManager: ActivityManager): ArrayList<DeviceDetail> {
         return arrayListOf(
             getCpuModel(),
             getCpuArch(),
             getCpuAbi(),
             getAmountCores(),
-            getCpuDetailedInfo()
+            getCpuDetailedInfo(),
+            getMemory(activityManager)
         )
     }
 }
