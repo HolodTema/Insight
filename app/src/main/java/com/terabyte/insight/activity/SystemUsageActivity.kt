@@ -16,6 +16,8 @@ import com.terabyte.insight.LOG_DEBUG
 import com.terabyte.insight.R
 import com.terabyte.insight.databinding.ActivitySystemUsageBinding
 import com.terabyte.insight.util.SystemUsageHelper
+import java.util.Locale
+import kotlin.math.round
 
 
 class SystemUsageActivity : AppCompatActivity() {
@@ -87,6 +89,9 @@ class SystemUsageActivity : AppCompatActivity() {
     }
 
     private fun configureMemoryUsageGraph() {
+        binding.textTotalMemory.text = "Total RAM: "
+        binding.textUsedMemory.text = "Used RAM: "
+
         binding.graphMemoryUsage.title = "RAM usage"
 
         binding.graphMemoryUsage.viewport.isXAxisBoundsManual = true
@@ -128,6 +133,15 @@ class SystemUsageActivity : AppCompatActivity() {
             series.thickness = 6
             binding.graphMemoryUsage.removeAllSeries()
             binding.graphMemoryUsage.addSeries(series)
+
+            val totalMemoryMegabytes = String.format(Locale.US, "%.2f", totalMemoryBytes / 1024.0 / 1024.0)
+            val totalMemoryGigabytes = String.format(Locale.US, "%.2f", totalMemoryBytes / 1024.0 / 1024.0 / 1024.0)
+            binding.textTotalMemory.text = "Total RAM: ${totalMemoryBytes}B = ${totalMemoryMegabytes}MB = ${totalMemoryGigabytes}GB"
+
+            val usedMemoryMegabytes = String.format(Locale.US, "%.2f", usedMemoryBytes / 1024.0 / 1024.0)
+            val usedMemoryGigabytes = String.format(Locale.US, "%.2f", usedMemoryBytes / 1024.0 / 1024.0 / 1024.0)
+            binding.textUsedMemory.text = "Used RAM: ${usedMemoryBytes}B = ${usedMemoryMegabytes}MB = ${usedMemoryGigabytes}GB"
+
         }
     }
 }
