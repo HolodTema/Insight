@@ -72,26 +72,13 @@ object CpuDetailsHelper {
         )
     }
 
-    fun getMemory(activityManager: ActivityManager): DeviceDetail {
-        val memoryInfo = ActivityManager.MemoryInfo()
-        activityManager.getMemoryInfo(memoryInfo)
-        val totalMemory = memoryInfo.totalMem
-
-        return DeviceDetail(
-            "memory",
-            totalMemory.toString(),
-            ""
-        )
-    }
-
-    fun getAll(activityManager: ActivityManager): ArrayList<DeviceDetail> {
+    fun getAll(): ArrayList<DeviceDetail> {
         return arrayListOf(
             getCpuModel(),
             getCpuArch(),
             getCpuAbi(),
             getAmountCores(),
             getCpuDetailedInfo(),
-            getMemory(activityManager)
         )
     }
 }

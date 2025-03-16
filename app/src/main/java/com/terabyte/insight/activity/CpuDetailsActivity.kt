@@ -38,8 +38,7 @@ class CpuDetailsActivity : AppCompatActivity() {
     }
 
     private fun configureRecyclerView() {
-        val activityManager = getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
-        val items = CpuDetailsHelper.getAll(activityManager)
+        val items = CpuDetailsHelper.getAll()
         val adapter = RecyclerDeviceDetailsAdapter(items, layoutInflater)
         binding.recycler.layoutManager = LinearLayoutManager(this)
         binding.recycler.adapter = adapter
