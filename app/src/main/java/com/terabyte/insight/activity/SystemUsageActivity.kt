@@ -4,6 +4,7 @@ import android.app.ActivityManager
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -11,6 +12,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.jjoe64.graphview.series.DataPoint
 import com.jjoe64.graphview.series.LineGraphSeries
+import com.terabyte.insight.LOG_DEBUG
 import com.terabyte.insight.R
 import com.terabyte.insight.databinding.ActivitySystemUsageBinding
 import com.terabyte.insight.util.SystemUsageHelper
@@ -30,7 +32,7 @@ class SystemUsageActivity : AppCompatActivity() {
         configureWindowInsets()
         configureButtonBack()
         configureTotalSystemUsageGraph()
-//        configureMemoryUsageGraph()
+        configureMemoryUsageGraph()
     }
 
     private fun configureWindowInsets() {
@@ -57,7 +59,7 @@ class SystemUsageActivity : AppCompatActivity() {
         binding.graphTotalSystemUsage.viewport.setMaxX(15.0)
         binding.graphTotalSystemUsage.viewport.setMinY(0.0)
         binding.graphTotalSystemUsage.viewport.setMaxY(100.0)
-        SystemUsageHelper.getEndlessTotalSystemUsage(1) { usagePercents ->
+        SystemUsageHelper.getEndlessTotalSystemUsage(500) { usagePercents ->
             if (usagePercents == SystemUsageHelper.SYSTEM_USAGE_INCORRECT) {
                 binding.graphTotalSystemUsage.title = "total system usage. No information"
                 return@getEndlessTotalSystemUsage
@@ -98,14 +100,16 @@ class SystemUsageActivity : AppCompatActivity() {
 
         SystemUsageHelper.getEndlessMemoryUsage(
             activityManager,
-            1
+            500,
         ) { totalMemoryBytes, usedMemoryBytes, usagePercents ->
+            Log.d(LOG_DEBUG, "$totalMemoryBytes  $usedMemoryBytes  $usagePercents")
+
             if (usagePercents == SystemUsageHelper.MEMORY_USAGE_INCORRECT || totalMemoryBytes == SystemUsageHelper.TOTAL_MEMORY_INCORRECT || usedMemoryBytes == SystemUsageHelper.USED_MEMORY_INCORRECT) {
                 binding.graphTotalSystemUsage.title = "Memory usage. No information"
                 return@getEndlessMemoryUsage
             }
 
-            binding.graphTotalSystemUsage.title = "Memory usage = $usagePercents%"
+            binding.graphMemoryUsage.title = "Memory usage = $usagePercents%"
 
             listMemoryUsage.add(DataPoint(listMemoryUsage.size.toDouble(), usagePercents))
             if (listMemoryUsage.size > 15) {
@@ -120,7 +124,7 @@ class SystemUsageActivity : AppCompatActivity() {
             val series = LineGraphSeries(
                 listMemoryUsage.toTypedArray()
             )
-            series.color = Color.GREEN
+            series.color = Color.BLUE
             series.thickness = 6
             binding.graphMemoryUsage.removeAllSeries()
             binding.graphMemoryUsage.addSeries(series)
